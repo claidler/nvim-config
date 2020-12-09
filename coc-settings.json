@@ -1,0 +1,29 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": ["*"],
+  "coc-actions.useCursorLine": true,
+  "coc.preferences.colorSupport": false,
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "codeLens.enable": true,
+  "suggest.enablePreview": true,
+  "suggest.enablePreselect": true,
+  "diagnostic.enableSign": true,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.errorSign": "✘",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.hintSign": "➤",
+  "diagnostic.enableHighlightLineNumber": true,
+  "diagnostic.messageTarget": "float",
+  "prettier.statusItemText": "",
+  "javascript.implementationsCodeLens.enable": false,
+  "javascript.referencesCodeLens.enable": false,
+  "typescript.referencesCodeLens.enable": false,
+  "typescript.implementationsCodeLens.enable": false,
+  "signature.enable": true,
+  "html.autoClosingTags": true,
+  "pairs.enableCharacters": ["(", "[", "{", "'", "\"", "`"]
+}
