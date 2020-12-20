@@ -5,4 +5,9 @@ command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish <args
 
 autocmd FileType dirvish nnoremap <buffer> gH :let g:dirvish_mode = ':silent keeppatterns g@\v/\.[^\/]+/?$@d'<Bar>Dirvish %<cr>
 autocmd FileType dirvish nnoremap <buffer> gh :let g:dirvish_mode = ''<Bar>Dirvish %<cr>
+
+autocmd FileType dirvish nmap <buffer> h <Plug>(dirvish_up)
+autocmd FileType dirvish nmap <buffer> l <CR>
 let g:dirvish_mode = ':silent keeppatterns g@\v/\.[^\/]+/?$@d _'
+
+

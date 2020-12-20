@@ -2,15 +2,7 @@
 source ~/.config/nvim/plugins.vim
 
 "Load theme
-source ~/.config/nvim/settings/theme.vim
-
-" ale settings
-" let b:ale_fixers = ['prettier', 'eslint']
-" let g:ale_fix_on_save = 1
-" let g:ale_virtualtext_cursor = 1
-" let g:ale_set_highlights = 1
-" highlight ALEVirtualTextStyleWarning ctermbg=DarkYellow
-" highlight ALEVirtualTextStyleError ctermbg=DarkMagenta
+source ~/.config/nvim/plugin-settings/theme.vim
 
 " undotree toggle
 nnoremap <F5> :MundoToggle<CR>
@@ -24,10 +16,17 @@ if !isdirectory($HOME."/.vim/undo-dir")
 endif
 set undodir=~/.vim/undo-dir
 set undofile
+set undolevels=2000 "number of undos to save
 
 " ****** Autoclose html tags ******
 let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.erb,*.jsx,*.tsx"
 let g:closetag_emptyTags_caseSensitive = 1
+
+" Text wrapping
+set linebreak
+set wrap
+set whichwrap=b,h,l,s,<,>,[,],~       " What to allow to cross line boundaries
+set linebreak                         " break long lines
 
 " ****** General ******
 set autoindent
@@ -42,7 +41,16 @@ set ttimeoutlen=0
 set smartcase
 set ignorecase
 set lazyredraw
+set signcolumn=yes
 set termguicolors
+set pumblend=20
+set winblend=5
+
+" remap escape
+inoremap jk <Esc>
+
+highlight Pmenu ctermbg=Black guibg=Black
+highlight PmenuSel ctermbg=Black guibg=Black ctermfg=White guifg=White
 
 let g:Hexokinase_optInPatterns = 'full_hex,rgb,rgba,hsl,hsla'
 
@@ -80,21 +88,25 @@ set clipboard=unnamedplus
 let mapleader=" "
 
 " FZF
-source ~/.config/nvim/settings/fzf.vim
+" source ~/.config/nvim/plugin-settings/fzf.vim
 
 " Personal stuff
-source ~/.config/nvim/settings/personal.vim
+source ~/.config/nvim/plugin-settings/personal.vim
 
-" Coc 
-" source ~/.config/nvim/settings/coc.vim
-" Lsp neovim
-luafile ~/.config/nvim/settings/lsp.lua
+" Lsp Neovim
+luafile ~/.config/nvim/lsp.lua
+
+" Telescope
+luafile ~/.config/nvim/telescope.lua
+
+" ExpressLine
+luafile ~/.config/nvim/expressline.lua
 
 " Dirvish
-source ~/.config/nvim/settings/dirvish.vim
+source ~/.config/nvim/plugin-settings/dirvish.vim
 
 " Docker
-source ~/.config/nvim/settings/docker-compose.vim
+source ~/.config/nvim/plugin-settings/docker-compose.vim
 
 "Hungry backspace
 inoremap <silent><expr><bs> 
@@ -102,7 +114,6 @@ inoremap <silent><expr><bs>
   \ &backspace =~? '.*eol\&.*start\&.*indent\&' &&
   \ !search('\S','nbW',line('.')) ? (col('.') != 1 ? "\<C-U>" : "") .
   \ "\<bs>" . (getline(line('.')-1) =~ '\S' ? "" : "\<C-F>") : "\<bs>"
-
 
 " execute db command
 function! s:env(var) abort
@@ -130,6 +141,7 @@ let g:vrc_curl_opts = {
 
 " make vim shell know about bash aliases
 let $BASH_ENV="~/.aliases/main.sh" 
+
 " get jira tasks
 nnoremap <silent> <leader>j :! j<CR>
 command! -nargs=1 JV execute "! jv " <q-args> 
@@ -141,24 +153,23 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.auto_preselect = v:false
+let g:compe.allow_prefix_unmatch = v:false
 
-" Avoid showing message extra message when using completion
-set shortmess+=c
-autocmd BufEnter * lua require'completion'.on_attach()
-let g:completion_enable_auto_popup = 1
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.vsnip = v:true
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+imap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 
-" autocmd BufWritePre *.tsx,*.ts lua vim.lsp.buf.formatting_sync(nil, 1000)
-" set autoread
-
-" treesitter code
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = { "c", "rust" },  -- list of language that will be disabled
-  },
-}
-EOF
+" Treesitter
+luafile ~/.config/nvim/plugin-settings/treesitter.lua
+" autochdir alternative for dirvish
+autocmd BufEnter * silent! lcd %:p:h
+let g:auto_save = 1  " enable AutoSave on Vim startup
