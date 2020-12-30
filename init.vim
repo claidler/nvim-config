@@ -52,6 +52,8 @@ inoremap jk <Esc>
 highlight Pmenu ctermbg=Black guibg=Black
 highlight PmenuSel ctermbg=Black guibg=Black ctermfg=White guifg=White
 
+
+
 let g:Hexokinase_optInPatterns = 'full_hex,rgb,rgba,hsl,hsla'
 
 let g:session_dir = '~/.vim-sessions'
@@ -62,12 +64,6 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 au BufNewFile,BufRead *.ts setlocal filetype=typescript
 au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
 
-" show cursorline on selected window only
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
 
 " ****** Netrw File Explorer ******
 " open netrw at the last opened location
@@ -96,14 +92,23 @@ source ~/.config/nvim/plugin-settings/personal.vim
 " Lsp Neovim
 luafile ~/.config/nvim/lsp.lua
 
+sign define LspDiagnosticSignError text= texthl=LspDiagnosticSignError
+sign define LspDiagnosticSignWarning text=● texthl=LspDiagnosticSignWarning
+sign define LspDiagnosticsSignInformation text=כֿ texthl=LspDiagnosticsSignInformation
+sign define LspDiagnosticsSignHint text=➤ texthl=LspDiagnosticsSignHint
+
 " Telescope
 luafile ~/.config/nvim/telescope.lua
 
 " ExpressLine
-luafile ~/.config/nvim/expressline.lua
+" luafile ~/.config/nvim/expressline.lua
+luafile ~/.config/nvim/galaxyline.lua
 
 " Dirvish
 source ~/.config/nvim/plugin-settings/dirvish.vim
+
+" GitSigns
+luafile ~/.config/nvim/plugin-settings/gitsigns.lua
 
 " Docker
 source ~/.config/nvim/plugin-settings/docker-compose.vim
@@ -170,6 +175,28 @@ imap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab
 
 " Treesitter
 luafile ~/.config/nvim/plugin-settings/treesitter.lua
+
 " autochdir alternative for dirvish
 autocmd BufEnter * silent! lcd %:p:h
+
 let g:auto_save = 1  " enable AutoSave on Vim startup
+
+nnoremap <silent> <A-d> :FloatermNew<CR>
+tnoremap <silent> <A-d> <C-\><C-n>:FloatermKill<CR>
+
+nnoremap <silent> <A-f> :Farf<CR>
+nnoremap <silent> <A-r> :Farr<CR>
+
+let g:signify_sign_add = '▋'
+let g:signify_sign_change = '▋'
+let g:signify_sign_delete = '▋'
+let g:signify_sign_delete_first_line = '▘'
+let g:signify_sign_show_count = 0
+" Fancy custom header
+let g:dashboard_default_executive ='telescope'
+let g:dashboard_default_header = 'default'
+let g:dashboard_preview_command="cat"
+let g:dashboard_preview_file="~/.config/nvim/dashboard/tiger.txt"
+let g:dashboard_preview_pipeline="lolcat"
+let g:dashboard_preview_file_width=80
+let g:dashboard_preview_file_height=25

@@ -1,4 +1,4 @@
--- local telescopeproject  = require('telescope').extensions.project
+require('telescope').load_extension('project')
 require('telescope').setup {
 	defaults = {
 		vimgrep_arguments = {

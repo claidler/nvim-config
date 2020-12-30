@@ -1,6 +1,7 @@
 local luafmt = {
-	command = 'lua ~/luafmt/luafmt.lua',
-	args = { "--f"},
+	command = 'luafmt',
+	args = { "--indent-count", 2, "--stdin"},
+	stdin = true
 }
 
 return luafmt;

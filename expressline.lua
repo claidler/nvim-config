@@ -7,10 +7,26 @@ local col        = sec.collapse_builtin
 local _space     = ' '
 local _separator = ' | '
 local _mode      = ext.mode
-local _gitbranch = sub.buf_autocmd("el_git_branch", "BufEnter", function(window, buffer) return ext.git_branch(window, buffer) end )
+local _gitbranch = sub.buf_autocmd(
+  "el_git_branch",
+  "BufEnter",
+  function(window, buffer)
+    local branch = ext.git_branch(window, buffer)
+    if branch then
+      return ' ' .. ext.git_icon() .. ' ' .. branch
+    end
+  end
+)
+local _gitchanges = sub.buf_autocmd(
+  "el_git_changes",
+  "BufWritePost",
+  function(window, buffer)
+    return ext.git_changes(window, buffer)
+  end
+)
 local _lsp 			 = lsp_statusline.segment
 local _icon      = ext.file_icon
-local _file      = bui.file
+local _file      = sec.maximum_width(bui.responsive_file(140, 90), 0.30)
 local _bufloc    = col{ _separator, bui.percentage_through_window}
 local _split     = sec.split
 local statusline = function()
@@ -25,6 +41,7 @@ local statusline = function()
 		_split,
 		_lsp,
 		_space,
+		_gitchanges,
 		_gitbranch,
 		_space,
     _bufloc,

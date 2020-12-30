@@ -6,5 +6,5 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:gitgutter_set_sign_backgrounds = 1
 
 set background=dark
-colorscheme jellybeans-reborn
+colorscheme zephyr
 set t_Co=256
