@@ -36,6 +36,8 @@ set shiftwidth=2
 set tabstop=2
 set mouse=a
 set noswapfile
+set nobackup
+set nowritebackup
 set wildignore=*/.git/*,*/node_modules/*,*/dist/*,*/build/*
 set ttimeoutlen=0
 set smartcase
@@ -46,13 +48,14 @@ set termguicolors
 set pumblend=20
 set winblend=5
 
+" improve updatetime - could reduce performance
+set updatetime=300
+
 " remap escape
 inoremap jk <Esc>
 
-highlight Pmenu ctermbg=Black guibg=Black
-highlight PmenuSel ctermbg=Black guibg=Black ctermfg=White guifg=White
-
-
+highlight Pmenu ctermbg=Black guibg=#364d63
+highlight PmenuSel ctermbg=Black guibg=#364d63 ctermfg=White guifg=White
 
 let g:Hexokinase_optInPatterns = 'full_hex,rgb,rgba,hsl,hsla'
 
@@ -86,16 +89,8 @@ let mapleader=" "
 " FZF
 " source ~/.config/nvim/plugin-settings/fzf.vim
 
-" Personal stuff
-source ~/.config/nvim/plugin-settings/personal.vim
-
 " Lsp Neovim
 luafile ~/.config/nvim/lsp.lua
-
-sign define LspDiagnosticSignError text= texthl=LspDiagnosticSignError
-sign define LspDiagnosticSignWarning text=● texthl=LspDiagnosticSignWarning
-sign define LspDiagnosticsSignInformation text=כֿ texthl=LspDiagnosticsSignInformation
-sign define LspDiagnosticsSignHint text=➤ texthl=LspDiagnosticsSignHint
 
 " Telescope
 luafile ~/.config/nvim/telescope.lua
@@ -109,9 +104,6 @@ source ~/.config/nvim/plugin-settings/dirvish.vim
 
 " GitSigns
 luafile ~/.config/nvim/plugin-settings/gitsigns.lua
-
-" Docker
-source ~/.config/nvim/plugin-settings/docker-compose.vim
 
 "Hungry backspace
 inoremap <silent><expr><bs> 
@@ -158,20 +150,23 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
-let g:compe = {}
-let g:compe.enabled = v:true
-let g:compe.debug = v:false
-let g:compe.min_length = 1
-let g:compe.auto_preselect = v:false
-let g:compe.allow_prefix_unmatch = v:false
+set shortmess+=c
+let g:completion_chain_complete_list = {
+\ 'scss' :[ { 'complete_items': ['lsp'] }, {'mode': 'omni'} ],
+\ 'default' :[
+    \{'complete_items': ['lsp']},
+    \{'complete_items': ['snippet', 'path']},
+    \{'complete_items': [ 'buffers' ]},
+    \{'mode': 'file'},
+\]
+\}
+let g:completion_auto_change_source = 1
+autocmd BufEnter * lua require'completion'.on_attach()
 
-let g:compe.source = {}
-let g:compe.source.path = v:true
-let g:compe.source.buffer = v:true
-let g:compe.source.nvim_lsp = v:true
-let g:compe.source.vsnip = v:true
-imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-imap <expr> <C-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
+imap <expr> <A-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+imap <expr> <A-l>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 
 " Treesitter
 luafile ~/.config/nvim/plugin-settings/treesitter.lua
@@ -194,9 +189,25 @@ let g:signify_sign_delete_first_line = '▘'
 let g:signify_sign_show_count = 0
 " Fancy custom header
 let g:dashboard_default_executive ='telescope'
-let g:dashboard_default_header = 'default'
 let g:dashboard_preview_command="cat"
 let g:dashboard_preview_file="~/.config/nvim/dashboard/tiger.txt"
 let g:dashboard_preview_pipeline="lolcat"
 let g:dashboard_preview_file_width=80
 let g:dashboard_preview_file_height=25
+
+let g:indicator_errors = "\uf05e "
+let g:indicator_warnings = "\uf071 "
+let g:indicator_infos = "\uf7fc "
+let g:indicator_hints = "\ufbe6 "
+
+" lsp diagnostics indicators
+call sign_define("LspDiagnosticsSignError", {"text" : g:indicator_errors, "texthl" : "LspDiagnosticsDefaultError"})
+call sign_define("LspDiagnosticsSignWarning", {"text" : g:indicator_warnings, "texthl" : "LspDiagnosticsDefaultWarning"})
+call sign_define("LspDiagnosticsSignInformation", {"text" : g:indicator_infos, "texthl" : "LspDiagnosticsDefaultInformation"})
+call sign_define("LspDiagnosticsSignHint", {"text" : g:indicator_hints, "texthl" : "LspDiagnosticsDefaultHint"})
+
+"Shortcuts split navigation:
+nnoremap <silent> <A-h> <C-w>h
+nnoremap <silent> <A-j> <C-w>j
+nnoremap <silent> <A-k> <C-w>k
+nnoremap <silent> <A-l> <C-w>l

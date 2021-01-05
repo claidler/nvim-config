@@ -13,7 +13,7 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'elzr/vim-json' 
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
-
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 "****** Other Plugins ******
 " popes stuff
@@ -24,10 +24,10 @@ Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-dotenv'
 
 " better surround
-Plug "machakann/vim-sandwich" 
+Plug 'machakann/vim-sandwich' 
 
 " nicer command bar
-Plug 'tjdevries/express_line.nvim'
+" Plug 'tjdevries/express_line.nvim'
 
 " for copy/paste files and folders - easier than netrw
 Plug 'justinmk/vim-dirvish'
@@ -41,9 +41,6 @@ Plug 'simnalamburt/vim-mundo'
 " close html tags
 Plug 'alvan/vim-closetag'
 
-"rest client
-Plug 'diepm/vim-rest-console'
-
 " git plugins
 Plug 'tpope/vim-fugitive', {'frozen': 1}
 Plug 'tpope/vim-dispatch' "for async fugitive
@@ -55,16 +52,16 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-vimspector.nvim'
-Plug 'nvim-telescope/telescope-project.nvim', {'frozen':1}
+Plug 'nvim-telescope/telescope-project.nvim'
 Plug 'brooth/far.vim'
 
 "completion/linting
 Plug 'neovim/nvim-lspconfig'
-Plug 'glepnir/lspsaga.nvim'
-Plug 'hrsh7th/nvim-compe'
+Plug 'nvim-lua/completion-nvim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'steelsojka/completion-buffers'
 
 "statusline
 Plug 'glepnir/galaxyline.nvim'
@@ -87,14 +84,13 @@ Plug 'kyazdani42/nvim-web-devicons'
 
 " smooth scroll
 Plug 'psliwka/vim-smoothie'
-Plug 'rhysd/accelerated-jk'
 
 " terminal
 Plug 'voldikss/vim-floaterm'
 
-" debugger
-Plug 'eliba2/vim-node-inspect'
+" debug
+Plug 'puremourning/vimspector'
 
 " start screen
-Plug 'cjjlaidler/dashboard-nvim'
+Plug 'glepnir/dashboard-nvim'
 call plug#end()
